@@ -23,10 +23,12 @@ Requirements
   
 define an object or class with pump_on (bool) and pump_speed (int)
 
-Logic to determine pump state
-- every 15 seconds figure out what the state of the pump should be, and then send a command
+Logic to determine pump state and send it to the pump
+- every 1 minute figure out what the state of the pump should be, and then send a command
 - if time is between start and stop time, pump_on = true and pump_speed = DEFAULT
 - if heater is on set PUMP_SPEED = HEATER_SPEED
 - if time is between skimmer start and end time
   - if skim_speed > PUMP_SPEED set PUMP_SPEED = skim_speed
-send pump command
+- save this in the pump state object
+- every 15 seconds, send whatever is in the pump state object to the pump. this will keep power things from changing too rapidly in case something weird is going because it can only change at most once per minute.
+
